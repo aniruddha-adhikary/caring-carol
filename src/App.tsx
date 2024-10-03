@@ -52,13 +52,13 @@ First, review My Colleague's Emergenetics profile:
 <my_colleague_profile>
 Role/Title/Profession: ${colleagueProfile.role || 'N/A'}
 ${Object.entries(colleagueProfile.preferences ?? {})
-  .filter(([_, value]) => value)
-  .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
-  .join(' and ')} thinking very strongly.
+      .filter(([_, value]) => value)
+      .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
+      .join(' and ')} thinking very strongly.
 ${Object.entries(colleagueProfile.preferences || {})
-  .filter(([_, value]) => !value)
-  .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
-  .join(' and ')} thinking weak.
+      .filter(([_, value]) => !value)
+      .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
+      .join(' and ')} thinking weak.
 
 ${colleagueProfile.traits?.assertiveness ?? 'N/A'} Assertiveness (${colleagueProfile.traits?.assertiveness === 'first-third' ? 'low' : colleagueProfile.traits?.assertiveness === 'second-third' ? 'medium' : colleagueProfile.traits?.assertiveness === 'third-third' ? 'high' : 'N/A'})
 ${colleagueProfile.traits?.expressiveness ?? 'N/A'} Expressiveness (${colleagueProfile.traits?.expressiveness === 'first-third' ? 'low' : colleagueProfile.traits?.expressiveness === 'second-third' ? 'medium' : colleagueProfile.traits?.expressiveness === 'third-third' ? 'high' : 'N/A'})
@@ -70,13 +70,13 @@ Now, review my Emergenetics profile:
 <my_profile>
 Role/Title/Profession: ${yourProfile.role || 'N/A'}
 ${Object.entries(yourProfile.preferences ?? {})
-  .filter(([_, value]) => value)
-  .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
-  .join(' and ')} thinking very strongly.
+      .filter(([_, value]) => value)
+      .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
+      .join(' and ')} thinking very strongly.
 ${Object.entries(yourProfile.preferences || {})
-  .filter(([_, value]) => !value)
-  .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
-  .join(' and ')} thinking weak.
+      .filter(([_, value]) => !value)
+      .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
+      .join(' and ')} thinking weak.
 
 ${yourProfile.traits?.assertiveness ?? 'N/A'} Assertiveness (${yourProfile.traits?.assertiveness === 'first-third' ? 'low' : yourProfile.traits?.assertiveness === 'second-third' ? 'medium' : yourProfile.traits?.assertiveness === 'third-third' ? 'high' : 'N/A'})
 ${yourProfile.traits?.expressiveness ?? 'N/A'} Expressiveness (${yourProfile.traits?.expressiveness === 'first-third' ? 'low' : yourProfile.traits?.expressiveness === 'second-third' ? 'medium' : yourProfile.traits?.expressiveness === 'third-third' ? 'high' : 'N/A'})
@@ -127,7 +127,7 @@ The situation will be provided by the user in following messages.`;
     setComparison(template);
     setShowInstructions(true);
     setTimeout(() => {
-      instructionsRef.current?.scrollIntoView({ behavior: 'smooth' });
+      instructionsRef.current?.scrollIntoView({behavior: 'smooth'});
     }, 100);
   };
 
@@ -140,14 +140,14 @@ The situation will be provided by the user in following messages.`;
     setShowInstructions(false);
     setIsYourProfileValid(false);
     setIsColleagueProfileValid(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }, []);
 
   return (
     <div className="flex flex-col items-center gap-8 p-8 min-h-screen">
       <h1 className="text-3xl font-bold mb-2">{appName}</h1>
       <p className="text-center text-gray-600 mb-6 max-w-2xl">{appDescription}</p>
-      <Toaster position="top-right" />
+      <Toaster position="top-right"/>
       <div className="flex flex-col md:flex-row gap-8 w-full">
         <FancyForm
           title="Your Personality Profile"
@@ -189,10 +189,11 @@ The situation will be provided by the user in following messages.`;
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <p className="font-semibold">Step 1:</p>
-                  <p>Go to <a href="https://pair.gov.sg" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">pair.gov.sg</a> and login.</p>
+                  <p>Go to <a href="https://pair.gov.sg" target="_blank" rel="noopener noreferrer"
+                              className="text-blue-500 hover:underline">pair.gov.sg</a> and login.</p>
                 </div>
                 <div className="aspect-w-16 aspect-h-9 bg-gray-100 rounded-lg overflow-hidden">
-                  <img src={step1Photo} alt="Step 1: Login" className="object-cover w-full h-full" />
+                  <img src={step1Photo} alt="Step 1: Login" className="object-cover w-full h-full"/>
                 </div>
 
                 <div className="space-y-2">
@@ -200,7 +201,7 @@ The situation will be provided by the user in following messages.`;
                   <p>Click on "Explore Assistants" and then "Create an Assistant".</p>
                 </div>
                 <div className="aspect-w-16 aspect-h-9 bg-gray-100 rounded-lg overflow-hidden">
-                  <img src={step2Photo} alt="Step 2: Create an Assistant" className="object-cover w-full h-full" />
+                  <img src={step2Photo} alt="Step 2: Create an Assistant" className="object-cover w-full h-full"/>
                 </div>
               </div>
 
@@ -267,15 +268,7 @@ The situation will be provided by the user in following messages.`;
           </CardContent>
         </Card>
       )}
-      {showInstructions && (
-        <Button
-          onClick={resetApp}
-          className="mt-8 mb-4 text-lg py-4 px-8"
-          variant="default"
-        >
-          Start Over Again
-        </Button>
-      )}
+
       <footer className="mt-auto py-4 text-center text-sm text-gray-500">
         Built with love by Ani @ GVT
       </footer>
