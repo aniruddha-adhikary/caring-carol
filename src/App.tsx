@@ -1,4 +1,4 @@
-import {useRef, useState} from "react";
+import {useRef, useState, useCallback} from "react";
 import FancyForm from "@/fancy-form.tsx";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
@@ -133,6 +133,16 @@ The situation will be provided by the user in following messages.`;
 
   const isGenerateDisabled = !isYourProfileValid || !isColleagueProfileValid;
 
+  const resetApp = useCallback(() => {
+    setYourProfile({});
+    setColleagueProfile({});
+    setComparison("");
+    setShowInstructions(false);
+    setIsYourProfileValid(false);
+    setIsColleagueProfileValid(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   return (
     <div className="flex flex-col items-center gap-8 p-8 min-h-screen">
       <h1 className="text-3xl font-bold mb-2">{appName}</h1>
@@ -256,6 +266,15 @@ The situation will be provided by the user in following messages.`;
             </div>
           </CardContent>
         </Card>
+      )}
+      {showInstructions && (
+        <Button
+          onClick={resetApp}
+          className="mt-8 mb-4 text-lg py-4 px-8"
+          variant="default"
+        >
+          Start Over Again
+        </Button>
       )}
       <footer className="mt-auto py-4 text-center text-sm text-gray-500">
         Built with love by Ani @ GVT
