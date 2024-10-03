@@ -1,9 +1,9 @@
-import { useState, useRef } from "react";
+import {useRef, useState} from "react";
 import FancyForm from "@/fancy-form.tsx";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { toast, Toaster } from "react-hot-toast";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import {Button} from "@/components/ui/button";
+import {Card, CardContent} from "@/components/ui/card";
+import {toast, Toaster} from "react-hot-toast";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip"
 
 import './App.css';
 import step1Photo from './assets/step-1.png';
@@ -11,9 +11,24 @@ import step2Photo from './assets/step-2.png';
 import step3Photo from './assets/step-3.png';
 import step4Photo from './assets/step-4.png';
 
+interface Profile {
+  role?: string;
+  preferences?: {
+    analytical?: boolean;
+    structural?: boolean;
+    social?: boolean;
+    conceptual?: boolean;
+  };
+  traits?: {
+    assertiveness?: 'first-third' | 'second-third' | 'third-third';
+    expressiveness?: 'first-third' | 'second-third' | 'third-third';
+    flexibility?: 'first-third' | 'second-third' | 'third-third';
+  };
+}
+
 function App() {
-  const [yourProfile, setYourProfile] = useState({});
-  const [colleagueProfile, setColleagueProfile] = useState({});
+  const [yourProfile, setYourProfile] = useState<Profile>({});
+  const [colleagueProfile, setColleagueProfile] = useState<Profile>({});
   const [comparison, setComparison] = useState("");
   const [showInstructions, setShowInstructions] = useState(false);
   const [isYourProfileValid, setIsYourProfileValid] = useState(false);
@@ -21,13 +36,17 @@ function App() {
   const instructionsRef = useRef<HTMLDivElement>(null);
 
   const generateComparison = () => {
+    if (!yourProfile.role || !colleagueProfile.role) {
+      console.error("Profiles are incomplete");
+      return;
+    }
     const template = `You are a communication expert specializing in tailoring messages based on Emergenetics profiles. Your task is to help me communicate effectively with my colleague in various workplace situations. Use the provided profiles and situation to craft appropriate communication strategies.
 
 First, review My Colleague's Emergenetics profile:
 
 <my_colleague_profile>
-Role/Title/Profession: ${colleagueProfile.role}
-${Object.entries(colleagueProfile.preferences || {})
+Role/Title/Profession: ${colleagueProfile.role || 'N/A'}
+${Object.entries(colleagueProfile.preferences ?? {})
   .filter(([_, value]) => value)
   .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
   .join(' and ')} thinking very strongly.
@@ -36,16 +55,16 @@ ${Object.entries(colleagueProfile.preferences || {})
   .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
   .join(' and ')} thinking weak.
 
-${colleagueProfile.traits?.assertiveness} Assertiveness (${colleagueProfile.traits?.assertiveness === 'first-third' ? 'low' : colleagueProfile.traits?.assertiveness === 'second-third' ? 'medium' : 'high'})
-${colleagueProfile.traits?.expressiveness} Expressiveness (${colleagueProfile.traits?.expressiveness === 'first-third' ? 'low' : colleagueProfile.traits?.expressiveness === 'second-third' ? 'medium' : 'high'})
-${colleagueProfile.traits?.flexibility} Flexibility (${colleagueProfile.traits?.flexibility === 'first-third' ? 'low' : colleagueProfile.traits?.flexibility === 'second-third' ? 'medium' : 'high'})
+${colleagueProfile.traits?.assertiveness ?? 'N/A'} Assertiveness (${colleagueProfile.traits?.assertiveness === 'first-third' ? 'low' : colleagueProfile.traits?.assertiveness === 'second-third' ? 'medium' : colleagueProfile.traits?.assertiveness === 'third-third' ? 'high' : 'N/A'})
+${colleagueProfile.traits?.expressiveness ?? 'N/A'} Expressiveness (${colleagueProfile.traits?.expressiveness === 'first-third' ? 'low' : colleagueProfile.traits?.expressiveness === 'second-third' ? 'medium' : colleagueProfile.traits?.expressiveness === 'third-third' ? 'high' : 'N/A'})
+${colleagueProfile.traits?.flexibility ?? 'N/A'} Flexibility (${colleagueProfile.traits?.flexibility === 'first-third' ? 'low' : colleagueProfile.traits?.flexibility === 'second-third' ? 'medium' : colleagueProfile.traits?.flexibility === 'third-third' ? 'high' : 'N/A'})
 </my_colleague_profile>
 
 Now, review my Emergenetics profile:
 
 <my_profile>
-Role/Title/Profession: ${yourProfile.role}
-${Object.entries(yourProfile.preferences || {})
+Role/Title/Profession: ${yourProfile.role || 'N/A'}
+${Object.entries(yourProfile.preferences ?? {})
   .filter(([_, value]) => value)
   .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
   .join(' and ')} thinking very strongly.
@@ -54,9 +73,9 @@ ${Object.entries(yourProfile.preferences || {})
   .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
   .join(' and ')} thinking weak.
 
-${yourProfile.traits?.assertiveness} Assertiveness (${yourProfile.traits?.assertiveness === 'first-third' ? 'low' : yourProfile.traits?.assertiveness === 'second-third' ? 'medium' : 'high'})
-${yourProfile.traits?.expressiveness} Expressiveness (${yourProfile.traits?.expressiveness === 'first-third' ? 'low' : yourProfile.traits?.expressiveness === 'second-third' ? 'medium' : 'high'})
-${yourProfile.traits?.flexibility} Flexibility (${yourProfile.traits?.flexibility === 'first-third' ? 'low' : yourProfile.traits?.flexibility === 'second-third' ? 'medium' : 'high'})
+${yourProfile.traits?.assertiveness ?? 'N/A'} Assertiveness (${yourProfile.traits?.assertiveness === 'first-third' ? 'low' : yourProfile.traits?.assertiveness === 'second-third' ? 'medium' : yourProfile.traits?.assertiveness === 'third-third' ? 'high' : 'N/A'})
+${yourProfile.traits?.expressiveness ?? 'N/A'} Expressiveness (${yourProfile.traits?.expressiveness === 'first-third' ? 'low' : yourProfile.traits?.expressiveness === 'second-third' ? 'medium' : yourProfile.traits?.expressiveness === 'third-third' ? 'high' : 'N/A'})
+${yourProfile.traits?.flexibility ?? 'N/A'} Flexibility (${yourProfile.traits?.flexibility === 'first-third' ? 'low' : yourProfile.traits?.flexibility === 'second-third' ? 'medium' : yourProfile.traits?.flexibility === 'third-third' ? 'high' : 'N/A'})
 </my_profile>
 
 You will be presented with a situation or message that I need to communicate to My Colleague. Your job is to analyze the situation and provide recommendations on how I should tailor my communication to suit My Colleague's preferences.
