@@ -6,6 +6,7 @@ import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {toast, Toaster} from "react-hot-toast";
+import { Play, ArrowLeft, ArrowRight } from "lucide-react";
 import './App.css';
 import step1Photo from './assets/step-1.png';
 import step2Photo from './assets/step-2.png';
@@ -13,6 +14,7 @@ import step3Photo from './assets/step-3.png';
 import step4Photo from './assets/step-4.png';
 import step45Photo from './assets/step-4.5.png';
 import step5Photo from './assets/step-5.png';
+import VideoModal from "./components/VideoModal.tsx";
 
 // Define the "eq" helper for Handlebars
 Handlebars.registerHelper('eq', function (arg1, arg2) {
@@ -48,9 +50,13 @@ function App() {
   const [comparison, setComparison] = useState("");
   const [isYourProfileValid, setIsYourProfileValid] = useState(false);
   const [isColleagueProfileValid, setIsColleagueProfileValid] = useState(false);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   const appName = "Caring Carol";
   const appDescription = "Caring Carol is an inclusive communication tool designed to help you create personalized Pair prompts. It enables you to tailor your communications effectively, promoting understanding and collaboration while respecting individual differences and preferences.";
+
+  const openVideoModal = () => setIsVideoModalOpen(true);
+  const closeVideoModal = () => setIsVideoModalOpen(false);
 
   const generateComparison = useCallback(() => {
     if (!yourProfile.role || !colleagueProfile.role) {
@@ -85,7 +91,6 @@ function App() {
       case 0:
         return (
           <>
-            <span className="starting-point"></span>
             <FancyForm
               title="Your Personality Profile"
               onUpdate={setYourProfile}
@@ -97,7 +102,6 @@ function App() {
       case 1:
         return (
           <>
-            <span className="starting-point"></span>
             <FancyForm
               title="Colleague's Personality Profile"
               onUpdate={setColleagueProfile}
@@ -115,7 +119,6 @@ function App() {
 
   const renderInstructions = () => (
       <>
-        <span className="starting-point"></span>
         <Card className="w-full max-w-4xl">
           <CardContent className="p-6">
             <h2 className="text-2xl font-bold mb-4">Instructions</h2>
@@ -208,13 +211,19 @@ function App() {
   return (
     <div className="flex flex-col items-center gap-8 p-8 min-h-screen">
       <h1 className="text-3xl font-bold mb-2">{appName}</h1>
-      <p className="text-center text-gray-600 mb-6 max-w-2xl">{appDescription}</p>
+      <p className="text-center text-gray-600 max-w-2xl">{appDescription}</p>
+      <Button onClick={openVideoModal} variant="outline" size="lg">
+        <Play className="mr-2 h-4 w-4" /> Watch Demo
+      </Button>
       <Toaster position="top-right"/>
+      <span className="starting-point"></span>
       {renderStep()}
-      <div className="flex gap-4 mt-4">
+      <VideoModal isOpen={isVideoModalOpen} onClose={closeVideoModal}
+                  videoUrl="https://www.youtube.com/watch?v=AUuU8GvfhQw"/>
+      <div className="flex gap-4">
         {step > 0 && (
           <Button onClick={() => setStep(step - 1)} size="lg">
-            Previous
+            <ArrowLeft className="mr-2 h-4 w-4" /> Previous
           </Button>
         )}
         {step < 1 && (
@@ -228,7 +237,7 @@ function App() {
                     size="lg"
                     className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 text-lg"
                   >
-                    Next
+                    Next <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </span>
               </TooltipTrigger>
