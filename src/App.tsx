@@ -29,6 +29,7 @@ interface Profile {
 function App() {
   const [yourProfile, setYourProfile] = useState<Profile>({});
   const [colleagueProfile, setColleagueProfile] = useState<Profile>({});
+  const appName = "Caring Carol";
   const [comparison, setComparison] = useState("");
   const [showInstructions, setShowInstructions] = useState(false);
   const [isYourProfileValid, setIsYourProfileValid] = useState(false);
@@ -129,7 +130,8 @@ The situation will be provided by the user in following messages.`;
   const isGenerateDisabled = !isYourProfileValid || !isColleagueProfileValid;
 
   return (
-    <div className="flex flex-col items-center gap-8 p-8">
+    <div className="flex flex-col items-center gap-8 p-8 min-h-screen">
+      <h1 className="text-3xl font-bold mb-4">{appName}</h1>
       <Toaster position="top-right" />
       <div className="flex flex-col md:flex-row gap-8 w-full">
         <FancyForm
@@ -234,6 +236,9 @@ The situation will be provided by the user in following messages.`;
           </CardContent>
         </Card>
       )}
+      <footer className="mt-auto py-4 text-center text-sm text-gray-500">
+        Built with love by Ani @ GVT
+      </footer>
     </div>
   );
 }
