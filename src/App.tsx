@@ -1,5 +1,12 @@
 import {useRef, useState, useCallback} from "react";
+import Handlebars from 'handlebars';
 import FancyForm from "@/fancy-form.tsx";
+import templateSource from "./template";
+
+// Define the "eq" helper for Handlebars
+Handlebars.registerHelper('eq', function(arg1, arg2) {
+  return arg1 === arg2;
+});
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
 import {toast, Toaster} from "react-hot-toast";
@@ -45,86 +52,9 @@ function App() {
       console.error("Profiles are incomplete");
       return;
     }
-    const template = `You are a communication expert specializing in tailoring messages based on Emergenetics profiles. Your task is to help me communicate effectively with my colleague in various workplace situations. Use the provided profiles and situation to craft appropriate communication strategies.
-
-First, review My Colleague's Emergenetics profile:
-
-<my_colleague_profile>
-Role/Title/Profession: ${colleagueProfile.role || 'N/A'}
-${Object.entries(colleagueProfile.preferences ?? {})
-      .filter(([_, value]) => value)
-      .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
-      .join(' and ')} thinking very strongly.
-${Object.entries(colleagueProfile.preferences || {})
-      .filter(([_, value]) => !value)
-      .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
-      .join(' and ')} thinking weak.
-
-${colleagueProfile.traits?.assertiveness ?? 'N/A'} Assertiveness (${colleagueProfile.traits?.assertiveness === 'first-third' ? 'low' : colleagueProfile.traits?.assertiveness === 'second-third' ? 'medium' : colleagueProfile.traits?.assertiveness === 'third-third' ? 'high' : 'N/A'})
-${colleagueProfile.traits?.expressiveness ?? 'N/A'} Expressiveness (${colleagueProfile.traits?.expressiveness === 'first-third' ? 'low' : colleagueProfile.traits?.expressiveness === 'second-third' ? 'medium' : colleagueProfile.traits?.expressiveness === 'third-third' ? 'high' : 'N/A'})
-${colleagueProfile.traits?.flexibility ?? 'N/A'} Flexibility (${colleagueProfile.traits?.flexibility === 'first-third' ? 'low' : colleagueProfile.traits?.flexibility === 'second-third' ? 'medium' : colleagueProfile.traits?.flexibility === 'third-third' ? 'high' : 'N/A'})
-</my_colleague_profile>
-
-Now, review my Emergenetics profile:
-
-<my_profile>
-Role/Title/Profession: ${yourProfile.role || 'N/A'}
-${Object.entries(yourProfile.preferences ?? {})
-      .filter(([_, value]) => value)
-      .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
-      .join(' and ')} thinking very strongly.
-${Object.entries(yourProfile.preferences || {})
-      .filter(([_, value]) => !value)
-      .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1))
-      .join(' and ')} thinking weak.
-
-${yourProfile.traits?.assertiveness ?? 'N/A'} Assertiveness (${yourProfile.traits?.assertiveness === 'first-third' ? 'low' : yourProfile.traits?.assertiveness === 'second-third' ? 'medium' : yourProfile.traits?.assertiveness === 'third-third' ? 'high' : 'N/A'})
-${yourProfile.traits?.expressiveness ?? 'N/A'} Expressiveness (${yourProfile.traits?.expressiveness === 'first-third' ? 'low' : yourProfile.traits?.expressiveness === 'second-third' ? 'medium' : yourProfile.traits?.expressiveness === 'third-third' ? 'high' : 'N/A'})
-${yourProfile.traits?.flexibility ?? 'N/A'} Flexibility (${yourProfile.traits?.flexibility === 'first-third' ? 'low' : yourProfile.traits?.flexibility === 'second-third' ? 'medium' : yourProfile.traits?.flexibility === 'third-third' ? 'high' : 'N/A'})
-</my_profile>
-
-You will be presented with a situation or message that I need to communicate to My Colleague. Your job is to analyze the situation and provide recommendations on how I should tailor my communication to suit My Colleague's preferences.
-
-To complete this task, follow these steps:
-
-1. Analyze the situation: Consider the context, the message's content, and its importance.
-
-2. Identify relevant aspects of My Colleague's profile: Determine which elements of My Colleague's Emergenetics profile are most relevant to this situation.
-
-3. Compare with my profile: Note any significant differences between my and My Colleague's profiles that may affect communication.
-
-4. Tailor the communication: Based on your analysis, suggest how I can adapt my communication style to better suit My Colleague's preferences. Consider the following aspects:
-   - Thinking preferences (Analytical, Structural, Social, Conceptual)
-   - Behavioral attributes (Expressiveness, Assertiveness, Flexibility)
-
-5. Provide specific recommendations: Offer concrete suggestions for:
-   - How to phrase the message
-   - When and how to approach My Colleague
-   - Which communication medium to use (e.g., email, face-to-face, meeting)
-   - Any follow-up actions
-
-6. Additional tips: Include any other relevant advice that could improve the effectiveness of the communication.
-
-Format your response as follows:
-
-## Analysis
-Provide a brief analysis of the situation and relevant profile aspects.
-
-
-## Recommendations
-List your specific recommendations for tailoring the communication.
-
-## Recommendations
-If appropriate, provide a sample of how I could phrase my message to My Colleague.
-
-## Recommendations
-Include any other relevant advice or considerations.
-
-Remember to focus on adapting my communication style to match My Colleague's preferences, emphasizing thinking, and being mindful of our  expressiveness, assertiveness and assertiveness. Unless specified otherwise, it is a Telegram/Slack message, a Word document/excel/powerpoint for his reference or face-to-face conversation. You may ask clarifying questions too.
-
-The situation will be provided by the user in following messages.`;
-
-    setComparison(template);
+    const compiledTemplate = Handlebars.compile(templateSource);
+    const filledTemplate = compiledTemplate({ yourProfile, colleagueProfile });
+    setComparison(filledTemplate);
     setShowInstructions(true);
     setTimeout(() => {
       instructionsRef.current?.scrollIntoView({behavior: 'smooth'});

@@ -100,7 +100,7 @@ export default function FancyForm({ title, onUpdate, onValidityChange }: FancyFo
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Behavioral Traits</h2>
+          <h2 className="text-xl font-semibold">Behavioral Preferences</h2>
           {Object.entries(traits).map(([key, value]) => (
             <div key={key} className="space-y-2">
               <label className="text-sm font-medium">{key.charAt(0).toUpperCase() + key.slice(1)}</label>
