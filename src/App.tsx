@@ -38,6 +38,8 @@ function App() {
   const [isColleagueProfileValid, setIsColleagueProfileValid] = useState(false);
   const instructionsRef = useRef<HTMLDivElement>(null);
 
+  const appDescription = "Caring Carol is an inclusive communication tool designed to help you create personalized Pair prompts. It enables you to tailor your communications effectively, promoting understanding and collaboration while respecting individual differences and preferences.";
+
   const generateComparison = () => {
     if (!yourProfile.role || !colleagueProfile.role) {
       console.error("Profiles are incomplete");
@@ -133,7 +135,8 @@ The situation will be provided by the user in following messages.`;
 
   return (
     <div className="flex flex-col items-center gap-8 p-8 min-h-screen">
-      <h1 className="text-3xl font-bold mb-4">{appName}</h1>
+      <h1 className="text-3xl font-bold mb-2">{appName}</h1>
+      <p className="text-center text-gray-600 mb-6 max-w-2xl">{appDescription}</p>
       <Toaster position="top-right" />
       <div className="flex flex-col md:flex-row gap-8 w-full">
         <FancyForm
