@@ -10,6 +10,7 @@ import step1Photo from './assets/step-1.png';
 import step2Photo from './assets/step-2.png';
 import step3Photo from './assets/step-3.png';
 import step4Photo from './assets/step-4.png';
+import step45Photo from './assets/step-4.5.png';
 import step5Photo from './assets/step-5.png';
 
 interface Profile {
@@ -235,10 +236,18 @@ The situation will be provided by the user in following messages.`;
 
                 <div className="space-y-2">
                   <p className="font-semibold">Step 6:</p>
+                  <p>Choose your Caring Agent to tailor your comms.</p>
+                </div>
+                <div className="aspect-w-16 aspect-h-9 bg-gray-100 rounded-lg overflow-hidden">
+                  <img src={step45Photo} alt="Step 6: Choose your Caring Agent" className="object-cover w-full h-full"/>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="font-semibold">Step 7:</p>
                   <p>Detail your situation, and get a thinking aid!</p>
                 </div>
                 <div className="aspect-w-16 aspect-h-9 bg-gray-100 rounded-lg overflow-hidden">
-                  <img src={step5Photo} alt="Step 6: Chat" className="object-cover w-full h-full"/>
+                  <img src={step5Photo} alt="Step 7: Chat" className="object-cover w-full h-full"/>
                 </div>
               </div>
             </div>
