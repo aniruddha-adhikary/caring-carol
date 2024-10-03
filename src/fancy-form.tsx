@@ -70,7 +70,7 @@ export default function FancyForm({ title, onUpdate, onValidityChange }: FancyFo
           />
         </div>
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Thought Preferences</h2>
+          <h2 className="text-xl font-semibold">Thought Preferences (&gt;23%)</h2>
           <div className="grid grid-cols-2 gap-4">
             {Object.entries(preferences).map(([key, value]) => (
               <Toggle
