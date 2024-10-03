@@ -1,14 +1,17 @@
-import {useState} from 'react'
-import {Toggle} from "@/components/ui/toggle"
-import {Button} from "@/components/ui/button"
-import {Card, CardHeader, CardTitle, CardContent} from "@/components/ui/card"
+import { useState, useEffect } from 'react'
+import { Toggle } from "@/components/ui/toggle"
+import { Button } from "@/components/ui/button"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 
 interface FancyFormProps {
   title: string;
   onUpdate: (data: any) => void;
+  onValidityChange: (isValid: boolean) => void;
 }
 
-export default function FancyForm({ title, onUpdate }: FancyFormProps) {
+export default function FancyForm({ title, onUpdate, onValidityChange }: FancyFormProps) {
+  const [role, setRole] = useState('')
   const [preferences, setPreferences] = useState({
     analytical: false,
     conceptual: false,
@@ -22,16 +25,33 @@ export default function FancyForm({ title, onUpdate }: FancyFormProps) {
     flexibility: 'first-third'
   })
 
+  const isFormValid = () => {
+    return role.trim() !== '' && Object.values(preferences).some(value => value === true);
+  }
+
+  useEffect(() => {
+    onValidityChange(isFormValid());
+  }, [role, preferences]);
+
+  const updateRole = (newRole: string) => {
+    setRole(newRole);
+    onUpdate({ role: newRole, preferences, traits });
+  }
+
+  const updatePreferencesAndTraits = (newPreferences: typeof preferences, newTraits: typeof traits) => {
+    onUpdate({ role, preferences: newPreferences, traits: newTraits });
+  }
+
   const togglePreference = (pref: keyof typeof preferences) => {
     const newPreferences = {...preferences, [pref]: !preferences[pref]};
     setPreferences(newPreferences);
-    onUpdate({ preferences: newPreferences, traits });
+    updatePreferencesAndTraits(newPreferences, traits);
   }
 
   const updateTrait = (trait: keyof typeof traits, value: 'first-third' | 'second-third' | 'third-third') => {
     const newTraits = {...traits, [trait]: value};
     setTraits(newTraits);
-    onUpdate({ preferences, traits: newTraits });
+    updatePreferencesAndTraits(preferences, newTraits);
   }
 
   return (
@@ -40,6 +60,15 @@ export default function FancyForm({ title, onUpdate }: FancyFormProps) {
         <CardTitle className="text-2xl font-bold text-center">{title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
+        <div className="space-y-2">
+          <label htmlFor="role" className="text-sm font-medium">Role/Title/Profession</label>
+          <Input
+            id="role"
+            value={role}
+            onChange={(e) => updateRole(e.target.value)}
+            placeholder="Enter role, title, or profession"
+          />
+        </div>
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Thought Preferences</h2>
           <div className="grid grid-cols-2 gap-4">
