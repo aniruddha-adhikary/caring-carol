@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Handlebars from "handlebars";
 import FancyForm from "@/fancy-form.tsx";
 import templateSource from "./template";
@@ -11,7 +11,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { toast, Toaster } from "react-hot-toast";
-import { Play, ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import "./App.css";
 import step1Photo from "./assets/step-1.png";
 import step2Photo from "./assets/step-2.png";
@@ -273,11 +273,6 @@ function App() {
         videoUrl="https://www.youtube.com/watch?v=AUuU8GvfhQw"
       />
       <div className="flex gap-4">
-        {step > 0 && (
-          <Button onClick={() => setStep(step - 1)} size="lg">
-            <ArrowLeft className="mr-2 h-4 w-4" /> Previous
-          </Button>
-        )}
         {step < 1 && (
           <TooltipProvider>
             <Tooltip>
