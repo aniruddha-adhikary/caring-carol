@@ -57,14 +57,22 @@ export default function FancyForm({
 
   const updateRole = (newRole: string) => {
     setRole(newRole);
-    onUpdate({ role: newRole, preferences, traits });
+    onUpdate({
+      role: newRole,
+      preferences,
+      traits: traits as FormData["traits"],
+    });
   };
 
   const updatePreferencesAndTraits = (
     newPreferences: typeof preferences,
     newTraits: typeof traits,
   ) => {
-    onUpdate({ role, preferences: newPreferences, traits: newTraits });
+    onUpdate({
+      role,
+      preferences: newPreferences,
+      traits: newTraits as FormData["traits"],
+    });
   };
 
   const togglePreference = (pref: keyof typeof preferences) => {
